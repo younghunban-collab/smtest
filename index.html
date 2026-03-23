@@ -69,21 +69,6 @@
 </head>
 <body>
 
-<!-- Netlify Form 배후 전송용 (화면에 보이지 않음, 데이터 저장 핵심) -->
-<form name="survey_results" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input type="text" name="응답_시간">
-    <input type="text" name="DOM_스타일">
-    <input type="text" name="SUB_스타일">
-    <input type="text" name="지배_범위">
-    <input type="text" name="현재_파트너">
-    <input type="text" name="비밀_유지">
-    <textarea name="너무_좋아해요"></textarea>
-    <textarea name="가끔_호기심"></textarea>
-    <textarea name="절대_싫어요"></textarea>
-    <input type="text" name="거부하는_도구">
-    <input type="text" name="터치_불가_부위">
-</form>
-
 <div class="container">
     <h1>통합 플레이 체크리스트</h1>
     <div class="author">By James(@md__james) | Digital UI Remake</div>
@@ -192,7 +177,7 @@
     <div class="modal-content">
         <h2>작성된 설문 요약 결과</h2>
         <div id="resultContent" class="result-text"></div>
-        <p id="submitStatus" class="status-msg">마스터 대시보드로 데이터 송신 대기 중...</p>
+        <p id="submitStatus" class="status-msg">마스터 폼(Formspree)으로 데이터 송신 대기 중...</p>
         <button class="close-btn" onclick="document.getElementById('resultModal').style.display='none'">창 닫기</button>
     </div>
 </div>
@@ -295,42 +280,50 @@
             부위: ${data["터치_초불가_부위"]}
         `;
 
+        // 배열 데이터를 문자열로 변환
+        data["응답_시간"] = timestamp;
+        data["너무_좋아해요"] = data["너무_좋아해요"].join(', ');
+        data["가끔_호기심"] = data["가끔_호기심"].join(', ');
+        data["절대_싫어요"] = data["절대_싫어요"].join(', ');
+
         document.getElementById('resultContent').innerHTML = contentHtml;
         document.getElementById('resultModal').style.display = 'block';
         
         const status = document.getElementById('submitStatus');
-        status.innerText = "질문자의 마스터 대시보드(Netlify)로 데이터를 전송하고 있습니다...";
+        status.innerText = "질문자의 대시보드(마스터 페이지)로 데이터를 전송하고 있습니다...";
         status.style.color = "#ffc000";
 
-        // Netlify Forms로 제출할 formData 빌드
-        const formData = new URLSearchParams();
-        formData.append("form-name", "survey_results");
-        formData.append("응답_시간", timestamp);
-        formData.append("DOM_스타일", data["DOM_권성향"]);
-        formData.append("SUB_스타일", data["SUB_피권성향"]);
-        formData.append("지배_범위", data["적용_범위"]);
-        formData.append("현재_파트너", data["현재_파트너"]);
-        formData.append("비밀_유지", data["비밀_유지"]);
-        formData.append("너무_좋아해요", data["너무_좋아해요"].join(', '));
-        formData.append("가끔_호기심", data["가끔_호기심"].join(', '));
-        formData.append("절대_싫어요", data["절대_싫어요"].join(', '));
-        formData.append("거부하는_도구", data["거부하는_도구"]);
-        formData.append("터치_불가_부위", data["터치_초불가_부위"]);
+        /*
+        ============================================================
+        [가장 강력한 대시보드 연동 가이드]
+        1. https://formspree.io/ 에 가입합니다.
+        2. New Form 버튼을 누르고 양식을 만듭니다.
+        3. 생성된 주소 (예: https://formspree.io/f/xyzpabcd) 를 복사합니다.
+        4. 아래 FORMSPREE_URL 에 적어넣으시면, 해당 사이트가 질문자님의 마스터 페이지가 되어 응답 목록이 차곡차곡 쌓입니다!
+        ============================================================
+        */
+        const FORMSPREE_URL = "YOUR_FORMSPREE_URL_HERE";
 
         try {
-            // Netlify 서버로 데이터를 보냅니다. (Netlify가 아니면 오류남)
-            const response = await fetch("/", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: formData.toString()
-            });
-
-            if (response.ok) {
-                status.innerHTML = "제출이 100% 완료되었습니다!<br><span style='font-size:12px; color:#666;'>안전하게 기록이 보관되었습니다.</span>";
-                status.style.color = "#28a745";
+            if (FORMSPREE_URL === "YOUR_FORMSPREE_URL_HERE") {
+                setTimeout(() => {
+                    status.innerHTML = "제출이 성공적으로 요약되었습니다!<br><span style='font-size:12px; color:#666;'><br>※ 관리자 대시보드 기능을 활성화하시려면, 코드 맨 아래에 있는 'YOUR_FORMSPREE_URL_HERE' 부분에 생성된 URL을 넣어주세요!</span>";
+                    status.style.color = "#28a745";
+                }, 1000);
             } else {
-                status.innerHTML = "제출 중 오류가 발생했습니다.<br><span style='font-size:12px; color:#ff0000;'>(로컬 PC 화면에서는 전송이 안 됩니다. 깃허브를 통해 Netlify에 배포된 링크에서만 데이터가 정상 전송됩니다.)</span>";
-                status.style.color = "#ff0000";
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    status.innerText = "설문 결과가 마스터 대시보드로 안전하게 전송되었습니다!";
+                    status.style.color = "#28a745";
+                } else {
+                    status.innerText = "서버 전송 에러가 발생했습니다. Formspree URL을 확인해주세요.";
+                    status.style.color = "#ff0000";
+                }
             }
         } catch (error) {
             status.innerText = "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.";
