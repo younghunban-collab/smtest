@@ -96,8 +96,8 @@
     <input type="text" name="합의부족_대처" />
     <input type="text" name="거부_도구_유무" />
     <input type="text" name="거부_도구_상세" />
-    <input type="text" name="워십_불가_부위" />
-    <input type="text" name="터치_불가_부위" />
+    <input type="text" name="내몸_터치_불가" />
+    <input type="text" name="상대터치_싫음" />
 
     <textarea name="너무_좋아해요"></textarea>
     <textarea name="가끔_호기심"></textarea>
@@ -210,7 +210,7 @@
         </div>
         <input type="text" class="input-box" id="q8-input" placeholder="거부하는 도구를 써주세요 (없으면 빈칸)">
 
-        <p style="margin-top:20px;">9) 섭이 워십 불가능한 돔의 신체 부위를 적어주세요. (돔도 원하지 않는 부위 체크)</p>
+        <p style="margin-top:20px;">9) 내 몸 터치 불가능한 신체 부위</p>
         <div class="options-grid" id="q9-grid">
             <div class="opt-btn" onclick="toggleActive(this)">입술</div>
             <div class="opt-btn" onclick="toggleActive(this)">귀, 목</div>
@@ -224,7 +224,7 @@
             <div class="opt-btn" onclick="toggleActive(this)">성기</div>
         </div>
 
-        <p>10) 돔이 터치하지 않길 바라는 섭의 신체 부위를 적어주세요.</p>
+        <p>10) 상대방 몸 터치하기 싫은 신체 부위</p>
         <div class="options-grid" id="q10-grid">
             <div class="opt-btn" onclick="toggleActive(this)">얼굴</div>
             <div class="opt-btn" onclick="toggleActive(this)">입술</div>
@@ -438,8 +438,8 @@
             "합의부족_대처": fetchContent('#q7-grid .active').join(', ') || '없음',
             "거부_도구_유무": fetchContent('#q8-grid .active').join(', ') || '없음',
             "거부_도구_상세": document.getElementById('q8-input').value || '없음',
-            "워십_불가_부위": fetchContent('#q9-grid .active').join(', ') || '없음',
-            "터치_불가_부위": fetchContent('#q10-grid .active').join(', ') || '없음',
+            "내몸_터치_불가": fetchContent('#q9-grid .active').join(', ') || '없음',
+            "상대터치_싫음": fetchContent('#q10-grid .active').join(', ') || '없음',
             "기타_원하는_플레이": document.getElementById('extra-requests').value || '없음',
 
             "너무_좋아해요": [],
@@ -484,8 +484,8 @@ SUB: ${data["SUB_피권성향"]}
             
 [거절/금지 구역]
 거절 도구: ${data["거부_도구_유무"]} / ${data["거부_도구_상세"]}
-워십 불가(DOM): ${data["워십_불가_부위"]}
-터치 금지(SUB): ${data["터치_불가_부위"]}
+내 몸 터치 불가: ${data["내몸_터치_불가"]}
+상대 터치 싫음: ${data["상대터치_싫음"]}
 
 [★완전 호호호호 (최애)]
 ${data["너무_좋아해요"].join(', ') || '없음'}
