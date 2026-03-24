@@ -755,15 +755,58 @@
             // 점수 보정 (최대 100점, 최소 0점)
             let finalScore = Math.min(100, Math.max(10, Math.floor(rawScore)));
 
-            // 성향 점수 기반 서술형 요약 생성
-            let summaryText = "";
-            if (finalScore >= 80) {
-                summaryText = "자신의 취향을 적극적으로 탐구하고 즐기는 <b>열정적인 플레이어</b>입니다. 다양한 자극과 상황에 대한 호기심 및 수용도가 매우 높습니다. 뚜렷한 주관을 바탕으로 파트너와 다채롭고 깊은 교감을 이끌어내는 데 능숙하며, 한계선 안에서 다이내믹한 경험을 추구하는 성향을 보입니다.";
-            } else if (finalScore >= 50) {
-                summaryText = "자신의 호불호가 명확하고, 신뢰하는 파트너와 함께 안정적인 <b>합의된 선 안에서 플레이를 즐기는 유형</b>입니다. 무리한 일탈보다는 충분히 예측 가능한 안전함을 중요시하면서도, 서로의 교감이 깊어짐에 따라 새로운 영역도 천천히 시도해볼 수 있는 유연함을 갖추고 있습니다.";
-            } else {
-                summaryText = "매우 신중하고 조심스러우며, <b>정서적 단단함과 안전함을 최우선으로 하는 유형</b>입니다. 강한 자극보다는 서서히 맞춰가는 과정에서 편안함을 느낍니다. 플 자체의 강도보다는 서로에 대한 완벽한 이해와 확실히 합의된 영역 내에서의 교감을 중요하게 생각합니다.";
-            }
+            // 성향 분석 (클릭 데이터 기반 개별 키워드 매칭)
+            const keywordsB = ["로프", "수갑", "족쇄", "테이프", "목줄", "결박", "감금", "코너타임", "정조대", "피박", "안대"];
+            const keywordsD = ["DOM", "지배", "마스터", "대디", "마미", "선생님", "조교", "생활관리", "마인드컨트롤", "명령", "존칭", "주인", "부모", "길들이기", "자상", "굴욕제공", "방관", "터프", "멀티"];
+            const keywordsS = ["SADI", "가학", "스팽킹", "케인", "패들", "채찍", "크롭", "고문", "전기", "니들", "피어싱", "나이프", "블러드", "꼬집기", "타격", "바이트", "기합"];
+            const keywordsM = ["SUB", "복종", "슬레이브", "밤저", "리틀", "브랫", "하녀", "부하", "노출", "방치", "마조", "피가학", "MASO", "피격", "노예", "아이", "반항아", "굴욕받음", "사냥감"];
+
+            const countMatches = (list, keywords) => {
+                let count = 0;
+                list.forEach(item => {
+                    const safeItem = String(item).toUpperCase();
+                    if (keywords.some(k => safeItem.includes(k.toUpperCase()))) count++;
+                });
+                return count;
+            };
+
+            const allSelected = [
+                ...(data["DOM_권성향"] || "").toString().split(', '),
+                ...(data["SUB_피권성향"] || "").toString().split(', '),
+                ...(data["너무_좋아해요"] ? data["너무_좋아해요"] : []),
+                ...(data["가끔_호기심"] ? data["가끔_호기심"] : [])
+            ];
+
+            const scoreB = countMatches(allSelected, keywordsB);
+            const scoreD = countMatches(allSelected, keywordsD);
+            const scoreS = countMatches(allSelected, keywordsS);
+            const scoreM = countMatches(allSelected, keywordsM);
+
+            let bText = scoreB > 3 ? "구속과 신체적 제어를 강하게 즐기거나 원하며, 속박을 통한 심리적 안정감이나 통제감을 뚜렷이 선호합니다." : (scoreB > 0 ? "결박이나 구속 플레이에 대해 가벼운 호기심이나 부분적인 수용도를 보입니다." : "구속이나 결박에 관련된 취향은 크게 두드러지지 않습니다.");
+            let dText = scoreD > 4 ? "상대를 심리적, 물리적으로 통제하거나 리드하는 것을 강하게 원하며, 관계의 주도권을 쥐는 뚜렷한 지배(Dominance) 성향이 보입니다." : (scoreD > 0 ? "상황과 파트너에 따라 관계의 주도권을 갖거나 부드러운 통제를 즐기는 편입니다." : "지배나 통제 자체에는 큰 목적을 두지 않거나, 다른 성향에 집중되어 있습니다.");
+            let sText = scoreS > 4 ? "물리적이거나 심리적인 자극/고통을 가하는 과정에서 큰 희열을 느끼는 뚜렷한 가학(Sadism) 성향을 보입니다." : (scoreS > 0 ? "스팽킹이나 소프트한 자극, 가벼운 훈육 등 약한 수준의 가학적 플레이에 흥미가 있습니다." : "가학적인 행위나 고통을 주는 것에는 선호도가 낮습니다.");
+            let mText = scoreM > 4 ? "자신을 온전히 내어주고 통제받거나, 가해지는 자극/고통을 수용하는 과정에서 쾌감을 느끼는 복종 및 피가학 성향이 강합니다." : (scoreM > 0 ? "가벼운 통제나 소프트한 자극을 수용하며 즐기는 편입니다." : "타인에게 억압되거나 고통을 감내하는 성향은 두드러지지 않습니다.");
+
+            let maxTrait = Math.max(scoreB, scoreD, scoreS, scoreM);
+            let dominantTraits = [];
+            if (scoreB === maxTrait && scoreB > 0) dominantTraits.push("결박/구속(B)");
+            if (scoreD === maxTrait && scoreD > 0) dominantTraits.push("지배/통제(D)");
+            if (scoreS === maxTrait && scoreS > 0) dominantTraits.push("가학(S)");
+            if (scoreM === maxTrait && scoreM > 0) dominantTraits.push("피가학/복종(M)");
+
+            let traitSummary = dominantTraits.length > 0 
+                ? `전체적인 선택을 종합해 볼 때, 당신은 <b>[${dominantTraits.join(', ')}]</b> 성향이 가장 돋보입니다. `
+                : `전체적인 선택을 종합해 볼 때, 특정 성향에 크게 치우치기보다는 다양한 분야를 넓고 얕게 탐색하는 <b>올라운더/탐구자</b> 성향이 보입니다. `;
+            
+            if (finalScore >= 80) traitSummary += "본인의 욕망을 깊이 이해하고 있으며, 적극적으로 파트너와 교감하고 강렬한 경험을 만들어가는 다이내믹한 플레이어입니다.";
+            else if (finalScore >= 50) traitSummary += "분명한 취향을 가지고 있으면서도 유연함을 잃지 않으며, 상호 신뢰와 합의를 바탕으로 한 안정적인 플레이를 추구합니다.";
+            else traitSummary += "자극적인 쾌락보다는 정서적인 안정감과 파트너와의 완벽한 합의, 조심스럽고 점진적인 관계 발전을 우선합니다.";
+
+            // 점수 타입 라벨 텍스트
+            let scoreLabel = "";
+            if (finalScore >= 80) scoreLabel = "(열정/개방형)";
+            else if (finalScore >= 50) scoreLabel = "(안정/유연형)";
+            else scoreLabel = "(신중/교감형)";
 
             // 모달 렌더링 (텍스트형 - 복사하기 기능 최적화)
             const contentHtml = `
@@ -795,12 +838,19 @@ ${data["기타_원하는_플레이"]}
 
 <br>
 <div style="margin-top:20px; padding:15px; background:#e7f3ff; border-left:5px solid #00b0f0; border-radius:5px; font-size:14px; line-height:1.6; color:#333; word-break:keep-all;">
-    💡 <b>성향 요약:</b><br>
-    ${summaryText}
+    💡 <b>총체적 성향 분석:</b><br>
+    ${traitSummary}<br><br>
+    <b>🔍 BDSM 개별 성향 돋보기:</b><br>
+    <ul style="margin: 10px 0; padding-left: 20px;">
+        <li style="margin-bottom: 5px;"><b>B (Bondage/구속):</b> <span style="color:#555;">${bText}</span></li>
+        <li style="margin-bottom: 5px;"><b>D (Dominance/지배):</b> <span style="color:#555;">${dText}</span></li>
+        <li style="margin-bottom: 5px;"><b>S (Sadism/가학):</b> <span style="color:#555;">${sText}</span></li>
+        <li style="margin-bottom: 5px;"><b>M (Masochism/피가학):</b> <span style="color:#555;">${mText}</span></li>
+    </ul>
 </div>
 
 <div style="text-align:center; font-size:18px; font-weight:bold; margin-top:15px; padding:15px; background:#fff3cd; border:2px solid #ffc107; border-radius:8px; color:#333;">
-🔥 데이터 기반 나의 성향 점수: <span style="color:#d32f2f; font-size:24px;">${finalScore}점</span> / 100점
+🔥 데이터 기반 나의 성향 점수: <span style="color:#d32f2f; font-size:24px;">${finalScore}점</span> <span style="color:#111; font-size:16px; margin-left:5px;">${scoreLabel}</span> / 100점
 </div>
         `;
             document.getElementById('resultContent').innerHTML = contentHtml.replace(/\n/g, '<br>');
