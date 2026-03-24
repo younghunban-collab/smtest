@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,465 +12,761 @@
             --red: #ff0000;
             --bg: #f4f4f4;
         }
-        body { font-family: 'Malgun Gothic', sans-serif; background: var(--bg); margin: 0; padding: 20px; font-size: 14px; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; margin-bottom: 5px; }
-        .author { text-align: center; font-size: 12px; color: #666; margin-bottom: 20px; }
-        
-        section { margin-bottom: 30px; border-top: 2px solid #333; padding-top: 15px; }
-        h2 { font-size: 16px; margin-bottom: 15px; background: #eee; padding: 5px 10px; border-left: 5px solid #333; }
-        
+
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+            border-top: 2px solid #333;
+            padding-top: 15px;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: #eee;
+            padding: 5px 10px;
+            border-left: 5px solid #333;
+        }
+
         /* 1번 스타일 테이블 */
-        .style-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed; }
-        .style-table th, .style-table td { border: 1px solid #ddd; padding: 8px; text-align: center; cursor: pointer; font-size: 13px; user-select: none; font-weight: bold; color: #111; }
-        .style-table th { background: #f9f9f9; font-weight: 900; color: #000; }
-        .dom-row { background: #e7f3ff; }
-        .sub-row { background: #fff0f0; }
-        .selected { background: #333 !important; color: white; }
+        .style-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            table-layout: fixed;
+        }
+
+        .style-table th,
+        .style-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            user-select: none;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .style-table th {
+            background: #f9f9f9;
+            font-weight: 900;
+            color: #000;
+        }
+
+        .dom-row {
+            background: #e7f3ff;
+        }
+
+        .sub-row {
+            background: #fff0f0;
+        }
+
+        .selected {
+            background: #333 !important;
+            color: white;
+        }
 
         /* 일반 선택 버튼형 */
-        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 5px; margin-bottom: 15px; }
-        .opt-btn { border: 1px solid #ddd; padding: 10px; text-align: center; cursor: pointer; border-radius: 4px; transition: 0.2s; user-select: none; font-size: 14px; font-weight: bold; color: #111; }
-        .opt-btn:hover { background: #f0f0f0; }
-        .opt-btn.active { background: #333; color: white; border-color: #333; }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .opt-btn {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+            user-select: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .opt-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .opt-btn.active {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
 
         /* 취향 선택표 (색상 순환) */
-        .preference-legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; font-weight: bold; font-size: 13px; }
-        
-        /* 새 그리드 래퍼 */
-        .pref-grid-wrapper { overflow-x: auto; padding-bottom: 10px; }
-        .pref-grid-table { width: 100%; min-width: 800px; border-collapse: collapse; table-layout: fixed; }
-        .pref-grid-table th, .pref-grid-table td { border: 1px solid #ccc;  }
-        
-        .row-title { background: #eee; font-weight: 900; font-size: 11px; text-align: center; padding: 5px; width: 80px; color: #000; }
-        
-        .pref-item { background: white; padding: 8px 1px; text-align: center; cursor: pointer; word-break: keep-all; height: 100%; min-height: 45px; display: flex; flex-direction: column; align-items: center; justify-content: center; user-select: none; }
-        .pref-text { font-size: 12px; font-weight: 900; letter-spacing: -0.5px; color: #000; }
-        .pref-desc { font-size: 9px; opacity: 0.7; margin-top: 2px; }
-        
-        /* 색상 상태 */
-        .state-0 { background: white; color: #333; }
-        .state-1 { background: var(--blue); color: white; } /* 좋아해요 */
-        .state-2 { background: var(--yellow); color: #333; } /* 가끔/호기심 */
-        .state-3 { background: var(--red); color: white; } /* 싫어해요 */
+        .preference-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 13px;
+        }
 
-        .input-box { width: 100%; padding: 10px; border: 1px solid #ddd; margin-top: 5px; box-sizing: border-box; font-family: inherit;}
-        
-        .footer-btns { position: sticky; bottom: 20px; display: flex; justify-content: center; gap: 10px; z-index: 10;}
-        .print-btn { background: #6c757d; color: white; border: none; padding: 15px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: 0.2s;}
-        .submit-btn { background: #28a745; color: white; border: none; padding: 15px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: 0.2s;}
-        .submit-btn:hover { background: #218838; }
-        .print-btn:hover { background: #5a6268; }
+        /* 새 그리드 래퍼 */
+        .pref-grid-wrapper {
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .pref-grid-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .pref-grid-table th,
+        .pref-grid-table td {
+            border: 1px solid #ccc;
+        }
+
+        .row-title {
+            background: #eee;
+            font-weight: 900;
+            font-size: 11px;
+            text-align: center;
+            padding: 5px;
+            width: 80px;
+            color: #000;
+        }
+
+        .pref-item {
+            background: white;
+            padding: 8px 1px;
+            text-align: center;
+            cursor: pointer;
+            word-break: keep-all;
+            height: 100%;
+            min-height: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .pref-text {
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #000;
+        }
+
+        .pref-desc {
+            font-size: 9px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* 색상 상태 */
+        .state-0 {
+            background: white;
+            color: #333;
+        }
+
+        .state-1 {
+            background: var(--blue);
+            color: white;
+        }
+
+        /* 좋아해요 */
+        .state-2 {
+            background: var(--yellow);
+            color: #333;
+        }
+
+        /* 가끔/호기심 */
+        .state-3 {
+            background: var(--red);
+            color: white;
+        }
+
+        /* 싫어해요 */
+
+        .input-box {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .footer-btns {
+            position: sticky;
+            bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .print-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: 0.2s;
+        }
+
+        .submit-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #218838;
+        }
+
+        .print-btn:hover {
+            background: #5a6268;
+        }
 
         /* 결과 모달(팝업) 스타일 */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; }
-        .modal-content { background: white; max-width: 600px; margin: 40px auto; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .modal-content h2 { background: transparent; border: none; text-align: center; font-size: 22px; margin-bottom: 20px; padding: 0; color: #333;}
-        .result-text { font-size: 14px; line-height: 1.8; color: #333; background: #f9f9f9; padding: 20px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 20px; word-break: keep-all; }
-        .status-msg { text-align: center; font-weight: bold; margin: 20px 0; font-size: 15px;}
-        .close-btn { display: block; width: 100%; padding: 15px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;}
-        .close-btn:hover { background: #555; }
-        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            background: transparent;
+            border: none;
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding: 0;
+            color: #333;
+        }
+
+        .result-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            word-break: keep-all;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .close-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            background: #555;
+        }
+
         /* 용어 사전 */
-        .glossary { margin-top: 30px; padding: 15px; background: #fff8e1; border: 1px solid #ffe082; border-radius: 5px; font-size: 11px; color: #555; line-height: 1.6; }
-        .glossary h4 { margin-top: 0; margin-bottom: 10px; color: #333; font-size: 13px;}
-        
+        .glossary {
+            margin-top: 30px;
+            padding: 15px;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .glossary h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 13px;
+        }
+
         @media (max-width: 600px) {
-            .style-table th { width: 45px; }
+            .style-table th {
+                width: 45px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- 넷리파이 전용 데이터 수집 폼 -->
-<form name="survey_results" netlify netlify-honeypot="bot-field" hidden>
-    <input type="text" name="응답_시간" />
-    <input type="text" name="성향_점수" />
-    <input type="text" name="DOM_권성향" />
-    <input type="text" name="SUB_피권성향" />
-    <input type="text" name="적용_범위" />
-    <input type="text" name="현재_파트너" />
-    <input type="text" name="비밀_유지" />
-    
-    <input type="text" name="만남_요일" />
-    <input type="text" name="연락_시간대" />
-    <input type="text" name="합의부족_대처" />
-    <input type="text" name="거부_도구_유무" />
-    <input type="text" name="거부_도구_상세" />
-    <input type="text" name="내몸_터치_불가" />
-    <input type="text" name="상대터치_싫음" />
+    <!-- 넷리파이 전용 데이터 수집 폼 -->
+    <form name="survey_results" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="응답_시간" />
+        <input type="text" name="성향_점수" />
+        <input type="text" name="DOM_권성향" />
+        <input type="text" name="SUB_피권성향" />
+        <input type="text" name="적용_범위" />
+        <input type="text" name="현재_파트너" />
+        <input type="text" name="비밀_유지" />
 
-    <textarea name="너무_좋아해요"></textarea>
-    <textarea name="가끔_호기심"></textarea>
-    <textarea name="절대_싫어요"></textarea>
-    <textarea name="기타_원하는_플레이"></textarea>
-</form>
+        <input type="text" name="만남_요일" />
+        <input type="text" name="연락_시간대" />
+        <input type="text" name="합의부족_대처" />
+        <input type="text" name="거부_도구_유무" />
+        <input type="text" name="거부_도구_상세" />
+        <input type="text" name="내몸_터치_불가" />
+        <input type="text" name="상대터치_싫음" />
 
-<div class="container">
-    <h1>통합 플레이 체크리스트</h1>
-    <div class="author">By James(@md__james) | Digital UI Remake</div>
+        <textarea name="너무_좋아해요"></textarea>
+        <textarea name="가끔_호기심"></textarea>
+        <textarea name="절대_싫어요"></textarea>
+        <textarea name="기타_원하는_플레이"></textarea>
+    </form>
 
-    <section>
-        <h2>1) 당신의 스타일을 알려주세요 (클릭하여 선택)</h2>
-        <table class="style-table">
-            <tr class="dom-row">
-                <th rowspan="2">DOM</th>
-                <td onclick="toggleSelect(this)">마스터<br>(완전한 소유)</td>
-                <td onclick="toggleSelect(this)">밤이<br>(낮엔 동등)</td>
-                <td onclick="toggleSelect(this)">애인<br>(장난/밀당)</td>
-                <td onclick="toggleSelect(this)">대디/마미<br>(자상/케어)</td>
-                <td onclick="toggleSelect(this)">선생님<br>(자상/훈육)</td>
-            </tr>
-            <tr class="dom-row">
-                <td onclick="toggleSelect(this)">조교<br>(냉정/훈육)</td>
-                <td onclick="toggleSelect(this)">터프<br>(거친새디/강제)</td>
-                <td onclick="toggleSelect(this)">방관<br>(섭케어 최소)</td>
-                <td onclick="toggleSelect(this)">멀티<br>(다수 섭 소유)</td>
-                <td onclick="toggleSelect(this)">연기파<br>(진심소유X)</td>
-            </tr>
-            <tr class="sub-row">
-                <th rowspan="2">SUB</th>
-                <td onclick="toggleSelect(this)">슬레이브<br>(24시간 복종)</td>
-                <td onclick="toggleSelect(this)">밤저<br>(플외 간섭X)</td>
-                <td onclick="toggleSelect(this)">애인<br>(연디지향)</td>
-                <td onclick="toggleSelect(this)">리틀, 펫<br>(관심/케어)</td>
-                <td onclick="toggleSelect(this)">브랫<br>(관심/훈육)</td>
-            </tr>
-            <tr class="sub-row">
-                <td onclick="toggleSelect(this)">하녀, 부하<br>(냉정/훈육)</td>
-                <td onclick="toggleSelect(this)">노출<br>(환경 중시)</td>
-                <td onclick="toggleSelect(this)">방치<br>(분위기 중시)</td>
-                <td onclick="toggleSelect(this)">멀티<br>(멀티플 선호)</td>
-                <td onclick="toggleSelect(this)">연기파<br>(진심복종X)</td>
-            </tr>
-        </table>
-    </section>
+    <div class="container">
+        <h1>통합 플레이 체크리스트</h1>
+        <div class="author">By James(@md__james) | Digital UI Remake</div>
 
-    <section>
-        <h2>2~4) 기본 성향 및 환경</h2>
-        <p>2) 지배/복종의 범위</p>
-        <div class="options-grid" id="q2-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">플 상황에서만</div>
-            <div class="opt-btn" onclick="toggleActive(this)">합의된 부분만</div>
-            <div class="opt-btn" onclick="toggleActive(this)">일상까지 일부</div>
-            <div class="opt-btn" onclick="toggleActive(this)">절대적인 지배</div>
-        </div>
-        <p>3) 현재 다른 파트너 유무</p>
-        <div class="options-grid" id="q3-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">전혀 없습니다.</div>
-            <div class="opt-btn" onclick="toggleActive(this)">다른 파트너 있습니다.</div>
-        </div>
-        <p>4) 비밀유지 정도</p>
-        <div class="options-grid" id="q4-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">절대 비밀</div>
-            <div class="opt-btn" onclick="toggleActive(this)">제한적 공개</div>
-            <div class="opt-btn" onclick="toggleActive(this)">얼굴제외 공개</div>
-            <div class="opt-btn" onclick="toggleActive(this)">완전 공개 가능</div>
-        </div>
-    </section>
-
-    <!-- 사용자 특별 요청 5~10번 추가 영역 -->
-    <section>
-        <h2>5~10) 세부 환경, 조건 및 대처</h2>
-        <p>5) 만남 가능한 요일은 언제입니까?</p>
-        <div class="options-grid" id="q5-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">월</div>
-            <div class="opt-btn" onclick="toggleActive(this)">화</div>
-            <div class="opt-btn" onclick="toggleActive(this)">수</div>
-            <div class="opt-btn" onclick="toggleActive(this)">목</div>
-            <div class="opt-btn" onclick="toggleActive(this)">금</div>
-            <div class="opt-btn" onclick="toggleActive(this)">토</div>
-            <div class="opt-btn" onclick="toggleActive(this)">일</div>
-            <div class="opt-btn" onclick="toggleActive(this)">1개월 4회 미만</div>
-            <div class="opt-btn" onclick="toggleActive(this)">1개월 2회 미만</div>
-            <div class="opt-btn" onclick="toggleActive(this)">유동적 스케줄</div>
-        </div>
-        
-        <p>6) 하루 중 연락 가능한 시간대는?</p>
-        <div class="options-grid" id="q6-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">아침 (8:00~11:00)</div>
-            <div class="opt-btn" onclick="toggleActive(this)">점심 (11:00~2:00)</div>
-            <div class="opt-btn" onclick="toggleActive(this)">낮 (2:00~6:00)</div>
-            <div class="opt-btn" onclick="toggleActive(this)">밤 (6:00~10:00)</div>
-            <div class="opt-btn" onclick="toggleActive(this)">야간/새벽 (10:00~2:00)</div>
-            <div class="opt-btn" onclick="toggleActive(this)">유동적 스케줄</div>
-        </div>
-
-        <p>7) 플레이하던 중 합의가 부족한 플레이를 진행할 때 원하는 대처는?</p>
-        <div class="options-grid" id="q7-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-            <div class="opt-btn" onclick="toggleActive(this)">안전어, 플 중단 후 대화</div>
-            <div class="opt-btn" onclick="toggleActive(this)">일단 참아보고 이후 대화</div>
-            <div class="opt-btn" onclick="toggleActive(this)">소극적 거부 의사 표현</div>
-            <div class="opt-btn" onclick="toggleActive(this)">돔이 원한다면 일단 최선을 다한다</div>
-        </div>
-
-        <p>8) 특별히 거부감을 느끼는 도구가 있습니까? 있다면 무엇입니까?</p>
-        <div class="options-grid" id="q8-grid" style="grid-template-columns: repeat(2, 1fr);">
-            <div class="opt-btn" onclick="toggleActive(this)">없다</div>
-            <div class="opt-btn" onclick="toggleActive(this)">있다 (아래에 기입)</div>
-        </div>
-        <input type="text" class="input-box" id="q8-input" placeholder="거부하는 도구를 써주세요 (없으면 빈칸)">
-
-        <p style="margin-top:20px;">9) 내 몸 터치 불가능한 신체 부위</p>
-        <div class="options-grid" id="q9-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">입술</div>
-            <div class="opt-btn" onclick="toggleActive(this)">귀, 목</div>
-            <div class="opt-btn" onclick="toggleActive(this)">가슴</div>
-            <div class="opt-btn" onclick="toggleActive(this)">등</div>
-            <div class="opt-btn" onclick="toggleActive(this)">엉덩이</div>
-            <div class="opt-btn" onclick="toggleActive(this)">허리</div>
-            <div class="opt-btn" onclick="toggleActive(this)">다리</div>
-            <div class="opt-btn" onclick="toggleActive(this)">발</div>
-            <div class="opt-btn" onclick="toggleActive(this)">애널</div>
-            <div class="opt-btn" onclick="toggleActive(this)">성기</div>
-        </div>
-
-        <p>10) 상대방 몸 터치하기 싫은 신체 부위</p>
-        <div class="options-grid" id="q10-grid">
-            <div class="opt-btn" onclick="toggleActive(this)">얼굴</div>
-            <div class="opt-btn" onclick="toggleActive(this)">입술</div>
-            <div class="opt-btn" onclick="toggleActive(this)">귀, 목</div>
-            <div class="opt-btn" onclick="toggleActive(this)">가슴</div>
-            <div class="opt-btn" onclick="toggleActive(this)">등</div>
-            <div class="opt-btn" onclick="toggleActive(this)">엉덩이</div>
-            <div class="opt-btn" onclick="toggleActive(this)">허리</div>
-            <div class="opt-btn" onclick="toggleActive(this)">다리, 발</div>
-            <div class="opt-btn" onclick="toggleActive(this)">애널</div>
-            <div class="opt-btn" onclick="toggleActive(this)">성기</div>
-        </div>
-    </section>
-
-    <section>
-        <h2>플레이 취향 선택표 (클릭 시 색상 변경)</h2>
-        <div class="preference-legend">
-            <span style="color:var(--blue)">■ (1번 누름) 좋아함</span>
-            <span style="color:var(--yellow)">■ (2번 누름) 호기심/가끔</span>
-            <span style="color:var(--red)">■ (3번 누름) 거부/싫음</span>
-        </div>
-        
-        <div class="pref-grid-wrapper">
-            <table class="pref-grid-table" id="newPrefTable">
-                <!-- JS 로 데이터 생성 -->
+        <section>
+            <h2>1) 당신의 스타일을 알려주세요 (클릭하여 선택)</h2>
+            <table class="style-table">
+                <tr class="dom-row">
+                    <th rowspan="2">DOM</th>
+                    <td onclick="toggleSelect(this)">마스터<br>(완전한 소유)</td>
+                    <td onclick="toggleSelect(this)">밤이<br>(낮엔 동등)</td>
+                    <td onclick="toggleSelect(this)">애인<br>(장난/밀당)</td>
+                    <td onclick="toggleSelect(this)">대디/마미<br>(자상/케어)</td>
+                    <td onclick="toggleSelect(this)">선생님<br>(자상/훈육)</td>
+                </tr>
+                <tr class="dom-row">
+                    <td onclick="toggleSelect(this)">조교<br>(냉정/훈육)</td>
+                    <td onclick="toggleSelect(this)">터프<br>(거친새디/강제)</td>
+                    <td onclick="toggleSelect(this)">방관<br>(섭케어 최소)</td>
+                    <td onclick="toggleSelect(this)">멀티<br>(다수 섭 소유)</td>
+                    <td onclick="toggleSelect(this)">연기파<br>(진심소유X)</td>
+                </tr>
+                <tr class="sub-row">
+                    <th rowspan="2">SUB</th>
+                    <td onclick="toggleSelect(this)">슬레이브<br>(24시간 복종)</td>
+                    <td onclick="toggleSelect(this)">밤저<br>(플외 간섭X)</td>
+                    <td onclick="toggleSelect(this)">애인<br>(연디지향)</td>
+                    <td onclick="toggleSelect(this)">리틀, 펫<br>(관심/케어)</td>
+                    <td onclick="toggleSelect(this)">브랫<br>(관심/훈육)</td>
+                </tr>
+                <tr class="sub-row">
+                    <td onclick="toggleSelect(this)">하녀, 부하<br>(냉정/훈육)</td>
+                    <td onclick="toggleSelect(this)">노출<br>(환경 중시)</td>
+                    <td onclick="toggleSelect(this)">방치<br>(분위기 중시)</td>
+                    <td onclick="toggleSelect(this)">멀티<br>(멀티플 선호)</td>
+                    <td onclick="toggleSelect(this)">연기파<br>(진심복종X)</td>
+                </tr>
             </table>
+        </section>
+
+        <section>
+            <h2>2~4) 기본 성향 및 환경</h2>
+            <p>2) 지배/복종의 범위</p>
+            <div class="options-grid" id="q2-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">플 상황에서만</div>
+                <div class="opt-btn" onclick="toggleActive(this)">합의된 부분만</div>
+                <div class="opt-btn" onclick="toggleActive(this)">일상까지 일부</div>
+                <div class="opt-btn" onclick="toggleActive(this)">절대적인 지배</div>
+            </div>
+            <p>3) 현재 다른 파트너 유무</p>
+            <div class="options-grid" id="q3-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">전혀 없습니다.</div>
+                <div class="opt-btn" onclick="toggleActive(this)">다른 파트너 있습니다.</div>
+            </div>
+            <p>4) 비밀유지 정도</p>
+            <div class="options-grid" id="q4-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">절대 비밀</div>
+                <div class="opt-btn" onclick="toggleActive(this)">제한적 공개</div>
+                <div class="opt-btn" onclick="toggleActive(this)">얼굴제외 공개</div>
+                <div class="opt-btn" onclick="toggleActive(this)">완전 공개 가능</div>
+            </div>
+        </section>
+
+        <!-- 사용자 특별 요청 5~10번 추가 영역 -->
+        <section>
+            <h2>5~10) 세부 환경, 조건 및 대처</h2>
+            <p>5) 만남 가능한 요일은 언제입니까?</p>
+            <div class="options-grid" id="q5-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">월</div>
+                <div class="opt-btn" onclick="toggleActive(this)">화</div>
+                <div class="opt-btn" onclick="toggleActive(this)">수</div>
+                <div class="opt-btn" onclick="toggleActive(this)">목</div>
+                <div class="opt-btn" onclick="toggleActive(this)">금</div>
+                <div class="opt-btn" onclick="toggleActive(this)">토</div>
+                <div class="opt-btn" onclick="toggleActive(this)">일</div>
+                <div class="opt-btn" onclick="toggleActive(this)">1개월 4회 미만</div>
+                <div class="opt-btn" onclick="toggleActive(this)">1개월 2회 미만</div>
+                <div class="opt-btn" onclick="toggleActive(this)">유동적 스케줄</div>
+            </div>
+
+            <p>6) 하루 중 연락 가능한 시간대는?</p>
+            <div class="options-grid" id="q6-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">아침 (8:00~11:00)</div>
+                <div class="opt-btn" onclick="toggleActive(this)">점심 (11:00~2:00)</div>
+                <div class="opt-btn" onclick="toggleActive(this)">낮 (2:00~6:00)</div>
+                <div class="opt-btn" onclick="toggleActive(this)">밤 (6:00~10:00)</div>
+                <div class="opt-btn" onclick="toggleActive(this)">야간/새벽 (10:00~2:00)</div>
+                <div class="opt-btn" onclick="toggleActive(this)">유동적 스케줄</div>
+            </div>
+
+            <p>7) 플레이하던 중 합의가 부족한 플레이를 진행할 때 원하는 대처는?</p>
+            <div class="options-grid" id="q7-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="opt-btn" onclick="toggleActive(this)">안전어, 플 중단 후 대화</div>
+                <div class="opt-btn" onclick="toggleActive(this)">일단 참아보고 이후 대화</div>
+                <div class="opt-btn" onclick="toggleActive(this)">소극적 거부 의사 표현</div>
+                <div class="opt-btn" onclick="toggleActive(this)">돔이 원한다면 일단 최선을 다한다</div>
+            </div>
+
+            <p>8) 특별히 거부감을 느끼는 도구가 있습니까? 있다면 무엇입니까?</p>
+            <div class="options-grid" id="q8-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="opt-btn" onclick="toggleActive(this)">없다</div>
+                <div class="opt-btn" onclick="toggleActive(this)">있다 (아래에 기입)</div>
+            </div>
+            <input type="text" class="input-box" id="q8-input" placeholder="거부하는 도구를 써주세요 (없으면 빈칸)">
+
+            <p style="margin-top:20px;">9) 내 몸 터치 불가능한 신체 부위</p>
+            <div class="options-grid" id="q9-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">입술</div>
+                <div class="opt-btn" onclick="toggleActive(this)">귀, 목</div>
+                <div class="opt-btn" onclick="toggleActive(this)">가슴</div>
+                <div class="opt-btn" onclick="toggleActive(this)">등</div>
+                <div class="opt-btn" onclick="toggleActive(this)">엉덩이</div>
+                <div class="opt-btn" onclick="toggleActive(this)">허리</div>
+                <div class="opt-btn" onclick="toggleActive(this)">다리</div>
+                <div class="opt-btn" onclick="toggleActive(this)">발</div>
+                <div class="opt-btn" onclick="toggleActive(this)">애널</div>
+                <div class="opt-btn" onclick="toggleActive(this)">성기</div>
+            </div>
+
+            <p>10) 상대방 몸 터치하기 싫은 신체 부위</p>
+            <div class="options-grid" id="q10-grid">
+                <div class="opt-btn" onclick="toggleActive(this)">얼굴</div>
+                <div class="opt-btn" onclick="toggleActive(this)">입술</div>
+                <div class="opt-btn" onclick="toggleActive(this)">귀, 목</div>
+                <div class="opt-btn" onclick="toggleActive(this)">가슴</div>
+                <div class="opt-btn" onclick="toggleActive(this)">등</div>
+                <div class="opt-btn" onclick="toggleActive(this)">엉덩이</div>
+                <div class="opt-btn" onclick="toggleActive(this)">허리</div>
+                <div class="opt-btn" onclick="toggleActive(this)">다리, 발</div>
+                <div class="opt-btn" onclick="toggleActive(this)">애널</div>
+                <div class="opt-btn" onclick="toggleActive(this)">성기</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>플레이 취향 선택표 (클릭 시 색상 변경)</h2>
+            <div class="preference-legend">
+                <span style="color:var(--blue)">■ (1번 누름) 좋아함</span>
+                <span style="color:var(--yellow)">■ (2번 누름) 호기심/가끔</span>
+                <span style="color:var(--red)">■ (3번 누름) 거부/싫음</span>
+            </div>
+
+            <div class="pref-grid-wrapper">
+                <table class="pref-grid-table" id="newPrefTable">
+                    <!-- JS 로 데이터 생성 -->
+                </table>
+            </div>
+
+            <div class="glossary">
+                <h4>📖 용어 사전 (English Glossary)</h4>
+                <p><strong>성향:</strong> FEM(여성지배), MEL(남성지배), DOM(지배), SUB(복종), SW(전환), SADI(가학), MASO(피가학), HOMO(동성),
+                    HETERO(이성), BI(양성)</p>
+                <p><strong>역할:</strong> MASTER/SLAVE(주인/노예), DADDY/LITTLE(부모/아이), SPANKER/SPANKEE(타격/피격), RIGGER/ROPE
+                    BUNNY(결박/피박), DEGRADER(굴욕제공자), PREY(사냥감)</p>
+                <p><strong>지향:</strong> 온플(온라인), 일플(일회성), 플파(플레이 파트너), 디엣(D/s 관계), 연디(연애+디엣)</p>
+            </div>
+        </section>
+
+        <!-- 사용자 특별 요청 마지막 섹션 변경 -->
+        <section>
+            <h2>기타 요청사항</h2>
+            <p>취향표에 없지만 원하는 플레이가 있습니까? (없으면 빈칸):</p>
+            <input type="text" class="input-box" id="extra-requests"
+                placeholder="특별한 상황, 원하는 플레이, 기타 요청사항 등을 자유롭게 적어주세요.">
+        </section>
+
+        <div class="footer-btns">
+            <button class="submit-btn" onclick="submitData()">결과 보기</button>
         </div>
-
-        <div class="glossary">
-            <h4>📖 용어 사전 (English Glossary)</h4>
-            <p><strong>성향:</strong> FEM(여성지배), MEL(남성지배), DOM(지배), SUB(복종), SW(전환), SADI(가학), MASO(피가학), HOMO(동성), HETERO(이성), BI(양성)</p>
-            <p><strong>역할:</strong> MASTER/SLAVE(주인/노예), DADDY/LITTLE(부모/아이), SPANKER/SPANKEE(타격/피격), RIGGER/ROPE BUNNY(결박/피박), DEGRADER(굴욕제공자), PREY(사냥감)</p>
-            <p><strong>지향:</strong> 온플(온라인), 일플(일회성), 플파(플레이 파트너), 디엣(D/s 관계), 연디(연애+디엣)</p>
-        </div>
-    </section>
-
-    <!-- 사용자 특별 요청 마지막 섹션 변경 -->
-    <section>
-        <h2>기타 요청사항</h2>
-        <p>취향표에 없지만 원하는 플레이가 있습니까? (없으면 빈칸):</p>
-        <input type="text" class="input-box" id="extra-requests" placeholder="특별한 상황, 원하는 플레이, 기타 요청사항 등을 자유롭게 적어주세요.">
-    </section>
-
-    <div class="footer-btns">
-        <button class="submit-btn" onclick="submitData()">결과 보기</button>
     </div>
-</div>
 
-<!-- 참가자 모달 팝업 (성향 요약 결과보기 명칭 변경) -->
-<div id="resultModal" class="modal-overlay">
-    <div class="modal-content">
-        <h2>성향 요약 결과</h2>
-        <div id="resultContent" class="result-text"></div>
-        
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <button class="close-btn" style="background:#00b0f0;" onclick="copyResults()">결과 복사하기</button>
-            <button class="close-btn" onclick="location.reload()">처음으로 가기</button>
+    <!-- 참가자 모달 팝업 (성향 요약 결과보기 명칭 변경) -->
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>성향 요약 결과</h2>
+            <div id="resultContent" class="result-text"></div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="close-btn" style="background:#00b0f0;" onclick="copyResults()">결과 복사하기</button>
+                <button class="close-btn" onclick="location.reload()">처음으로 가기</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    const categoryData = [
-        {
-            title: "성향",
-            items: [{t:"FEM",d:"여성지배"}, {t:"MEL",d:"남성지배"}, {t:"DOM",d:"지배"}, {t:"SUB",d:"복종"}, {t:"SW",d:"전환"}, {t:"SADI",d:"가학"}, {t:"MASO",d:"피가학"}, {t:"HOMO",d:"동성"}, {t:"HETERO",d:"이성"}, {t:"BI",d:"양성"}]
-        },
-        {
-            title: "관계(상)",
-            items: [{t:"MASTER",d:"주인"}, {t:"DADDY",d:"부모"}, {t:"SPANKER",d:"타격"}, {t:"TAMER",d:"길들이기"}, {t:"RIGGER",d:"결박"}, {t:"OWNER",d:"자상"}, {t:"DEGRADER",d:"굴욕제공"}, {t:"HUNTER",d:"추격자"}, {t:"-"}, {t:"-"}]
-        },
-        {
-            title: "관계(하)",
-            items: [{t:"SLAVE",d:"노예"}, {t:"LITTLE",d:"아이"}, {t:"SPANKEE",d:"피격"}, {t:"BRAT",d:"반항아"}, {t:"ROPE\nBUNNY",d:"피박"}, {t:"PET",d:"펫"}, {t:"DEGRADEE",d:"굴욕받음"}, {t:"PREY",d:"사냥감"}, {t:"-"}, {t:"-"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"공개조교"}, {t:"마인드컨트롤"}, {t:"애니멀트레이닝"}, {t:"하우스슬레이브"}, {t:"정액삼키기"}, {t:"브레스컨트롤"}, {t:"골든샤워"}, {t:"고문"}, {t:"합의강제플"}, {t:"더블페네트",d:"동시삽입"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"생활관리"}, {t:"감금플"}, {t:"승마플"}, {t:"마네킹플레이"}, {t:"부카케"}, {t:"워터스포츠"}, {t:"제모"}, {t:"딥쓰롯",d:"목구멍"}, {t:"오르가즘컨트롤"}, {t:"멀티오르가즘"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"수치플"}, {t:"방치플"}, {t:"도그플"}, {t:"미션"}, {t:"조교"}, {t:"페이스시팅"}, {t:"풋잡",d:"발"}, {t:"펠라치오",d:"입"}, {t:"스팽킹",d:"체벌"}, {t:"섹스"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"낙서플"}, {t:"음식물"}, {t:"베이비플"}, {t:"스핏",d:"침"}, {t:"풋워싱",d:"발씻기"}, {t:"얼음플"}, {t:"핑거링",d:"손"}, {t:"신체검사"}, {t:"바이트",d:"깨물기"}, {t:"기합"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"성별바꾸기"}, {t:"촬영"}, {t:"애원하기"}, {t:"코너타임"}, {t:"핸드워십",d:"손숭배"}, {t:"저온초"}, {t:"니플",d:"유두"}, {t:"꼬집기"}, {t:"포즈취하기"}, {t:"자위"}]
-        },
-        {
-            title: "행위",
-            items: [{t:"존칭사용"}, {t:"반항플"}, {t:"욕설"}, {t:"눈마주침제한"}, {t:"무릎꿇기"}, {t:"쓰담토닥"}, {t:"허그"}, {t:"스킨십"}, {t:"간지럼"}, {t:"키스"}]
-        },
-        {
-            title: "애널",
-            items: [{t:"애널",d:"항문"}, {t:"애널관찰"}, {t:"애널터치"}, {t:"손가락삽입"}, {t:"꼬리착용"}, {t:"애널플러그"}, {t:"애널진동기"}, {t:"애널후크"}, {t:"관장"}, {t:"애널섹스"}]
-        },
-        {
-            title: "그 외",
-            items: [{t:"전기플레이"}, {t:"니들",d:"바늘"}, {t:"피어싱"}, {t:"나이프",d:"칼"}, {t:"린치",d:"집단폭행"}, {t:"블러드",d:"피"}, {t:"골든(입)"}, {t:"부츠워십"}, {t:"스캇",d:"배설물"}, {t:"-"}]
-        },
-        {
-            title: "야외/하드",
-            items: [{t:"야외노출"}, {t:"야외플레이"}, {t:"영상공개"}, {t:"갱뱅"}, {t:"광대플"}, {t:"요도플"}, {t:"볼스트레칭"}, {t:"볼킹킹"}, {t:"볼버스팅"}, {t:"피스팅",d:"주먹"}]
-        },
-        {
-            title: "도구",
-            items: [{t:"핸드",d:"손"}, {t:"케인",d:"막대"}, {t:"패들",d:"주걱"}, {t:"채찍"}, {t:"크롭"}, {t:"로프",d:"줄"}, {t:"수갑/족쇄"}, {t:"테이프"}, {t:"목줄"}, {t:"-"}]
-        },
-        {
-            title: "도구",
-            items: [{t:"딜도"}, {t:"진동기"}, {t:"페어리"}, {t:"클리진동기"}, {t:"안대"}, {t:"코스프레"}, {t:"볼개그",d:"재갈"}, {t:"코걸이"}, {t:"정조대"}, {t:"페니반"}]
-        },
-        {
-            title: "스팽부위",
-            items: [{t:"손바닥"}, {t:"뺨"}, {t:"가슴"}, {t:"등"}, {t:"엉덩이"}, {t:"종아리"}, {t:"뒷허벅지"}, {t:"앞허벅지"}, {t:"성기"}, {t:"-"}]
-        },
-        {
-            title: "성감대",
-            items: [{t:"입술"}, {t:"귀/목"}, {t:"가슴"}, {t:"등"}, {t:"엉덩이"}, {t:"허리"}, {t:"다리"}, {t:"애널"}, {t:"성기"}, {t:"-"}]
-        },
-        {
-            title: "지향",
-            items: [{t:"온플"}, {t:"일플"}, {t:"플파"}, {t:"디엣",d:"D/S관계"}, {t:"연디",d:"연애+디엣"}, {t:"-"}, {t:"-"}, {t:"-"}, {t:"-"}, {t:"-"}]
-        }
-    ];
+    <script>
+        const categoryData = [
+            {
+                title: "성향",
+                items: [{ t: "FEM", d: "여성지배" }, { t: "MEL", d: "남성지배" }, { t: "DOM", d: "지배" }, { t: "SUB", d: "복종" }, { t: "SW", d: "전환" }, { t: "SADI", d: "가학" }, { t: "MASO", d: "피가학" }, { t: "HOMO", d: "동성" }, { t: "HETERO", d: "이성" }, { t: "BI", d: "양성" }]
+            },
+            {
+                title: "관계(상)",
+                items: [{ t: "MASTER", d: "주인" }, { t: "DADDY", d: "부모" }, { t: "SPANKER", d: "타격" }, { t: "TAMER", d: "길들이기" }, { t: "RIGGER", d: "결박" }, { t: "OWNER", d: "자상" }, { t: "DEGRADER", d: "굴욕제공" }, { t: "HUNTER", d: "추격자" }, { t: "-" }, { t: "-" }]
+            },
+            {
+                title: "관계(하)",
+                items: [{ t: "SLAVE", d: "노예" }, { t: "LITTLE", d: "아이" }, { t: "SPANKEE", d: "피격" }, { t: "BRAT", d: "반항아" }, { t: "ROPE\nBUNNY", d: "피박" }, { t: "PET", d: "펫" }, { t: "DEGRADEE", d: "굴욕받음" }, { t: "PREY", d: "사냥감" }, { t: "-" }, { t: "-" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "공개조교" }, { t: "마인드컨트롤" }, { t: "애니멀트레이닝" }, { t: "하우스슬레이브" }, { t: "정액삼키기" }, { t: "브레스컨트롤" }, { t: "골든샤워" }, { t: "고문" }, { t: "합의강제플" }, { t: "더블페네트", d: "동시삽입" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "생활관리" }, { t: "감금플" }, { t: "승마플" }, { t: "마네킹플레이" }, { t: "부카케" }, { t: "워터스포츠" }, { t: "제모" }, { t: "딥쓰롯", d: "목구멍" }, { t: "오르가즘컨트롤" }, { t: "멀티오르가즘" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "수치플" }, { t: "방치플" }, { t: "도그플" }, { t: "미션" }, { t: "조교" }, { t: "페이스시팅" }, { t: "풋잡", d: "발" }, { t: "펠라치오", d: "입" }, { t: "스팽킹", d: "체벌" }, { t: "섹스" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "낙서플" }, { t: "음식물" }, { t: "베이비플" }, { t: "스핏", d: "침" }, { t: "풋워싱", d: "발씻기" }, { t: "얼음플" }, { t: "핑거링", d: "손" }, { t: "신체검사" }, { t: "바이트", d: "깨물기" }, { t: "기합" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "성별바꾸기" }, { t: "촬영" }, { t: "애원하기" }, { t: "코너타임" }, { t: "핸드워십", d: "손숭배" }, { t: "저온초" }, { t: "니플", d: "유두" }, { t: "꼬집기" }, { t: "포즈취하기" }, { t: "자위" }]
+            },
+            {
+                title: "행위",
+                items: [{ t: "존칭사용" }, { t: "반항플" }, { t: "욕설" }, { t: "눈마주침제한" }, { t: "무릎꿇기" }, { t: "쓰담토닥" }, { t: "허그" }, { t: "스킨십" }, { t: "간지럼" }, { t: "키스" }]
+            },
+            {
+                title: "애널",
+                items: [{ t: "애널", d: "항문" }, { t: "애널관찰" }, { t: "애널터치" }, { t: "손가락삽입" }, { t: "꼬리착용" }, { t: "애널플러그" }, { t: "애널진동기" }, { t: "애널후크" }, { t: "관장" }, { t: "애널섹스" }]
+            },
+            {
+                title: "그 외",
+                items: [{ t: "전기플레이" }, { t: "니들", d: "바늘" }, { t: "피어싱" }, { t: "나이프", d: "칼" }, { t: "린치", d: "집단폭행" }, { t: "블러드", d: "피" }, { t: "골든(입)" }, { t: "부츠워십" }, { t: "스캇", d: "배설물" }, { t: "-" }]
+            },
+            {
+                title: "야외/하드",
+                items: [{ t: "야외노출" }, { t: "야외플레이" }, { t: "영상공개" }, { t: "갱뱅" }, { t: "광대플" }, { t: "요도플" }, { t: "볼스트레칭" }, { t: "볼킹킹" }, { t: "볼버스팅" }, { t: "피스팅", d: "주먹" }]
+            },
+            {
+                title: "도구",
+                items: [{ t: "핸드", d: "손" }, { t: "케인", d: "막대" }, { t: "패들", d: "주걱" }, { t: "채찍" }, { t: "크롭" }, { t: "로프", d: "줄" }, { t: "수갑/족쇄" }, { t: "테이프" }, { t: "목줄" }, { t: "-" }]
+            },
+            {
+                title: "도구",
+                items: [{ t: "딜도" }, { t: "진동기" }, { t: "페어리" }, { t: "클리진동기" }, { t: "안대" }, { t: "코스프레" }, { t: "볼개그", d: "재갈" }, { t: "코걸이" }, { t: "정조대" }, { t: "페니반" }]
+            },
+            {
+                title: "스팽부위",
+                items: [{ t: "손바닥" }, { t: "뺨" }, { t: "가슴" }, { t: "등" }, { t: "엉덩이" }, { t: "종아리" }, { t: "뒷허벅지" }, { t: "앞허벅지" }, { t: "성기" }, { t: "-" }]
+            },
+            {
+                title: "성감대",
+                items: [{ t: "입술" }, { t: "귀/목" }, { t: "가슴" }, { t: "등" }, { t: "엉덩이" }, { t: "허리" }, { t: "다리" }, { t: "애널" }, { t: "성기" }, { t: "-" }]
+            },
+            {
+                title: "지향",
+                items: [{ t: "온플" }, { t: "일플" }, { t: "플파" }, { t: "디엣", d: "D/S관계" }, { t: "연디", d: "연애+디엣" }, { t: "-" }, { t: "-" }, { t: "-" }, { t: "-" }, { t: "-" }]
+            }
+        ];
 
-    const tableBody = document.getElementById('newPrefTable');
-    
-    categoryData.forEach(row => {
-        const tr = document.createElement('tr');
-        
-        let titleTd = document.createElement('th');
-        titleTd.className = 'row-title';
-        titleTd.innerText = row.title;
-        tr.appendChild(titleTd);
-        
-        row.items.forEach(item => {
-            let td = document.createElement('td');
-            if(item.t === "-") {
-                td.style.background = "#f4f4f4";
+        const tableBody = document.getElementById('newPrefTable');
+
+        categoryData.forEach(row => {
+            const tr = document.createElement('tr');
+
+            let titleTd = document.createElement('th');
+            titleTd.className = 'row-title';
+            titleTd.innerText = row.title;
+            tr.appendChild(titleTd);
+
+            row.items.forEach(item => {
+                let td = document.createElement('td');
+                if (item.t === "-") {
+                    td.style.background = "#f4f4f4";
+                    tr.appendChild(td);
+                    return;
+                }
+
+                let div = document.createElement('div');
+                div.className = 'pref-item state-0';
+                div.dataset.value = item.t;
+
+                if (item.d) {
+                    div.innerHTML = `<span class="pref-text">${item.t}</span><span class="pref-desc">(${item.d})</span>`;
+                } else {
+                    div.innerHTML = `<span class="pref-text">${item.t}</span>`;
+                }
+
+                div.onclick = function () {
+                    let currentState = 0;
+                    if (this.classList.contains('state-1')) currentState = 1;
+                    else if (this.classList.contains('state-2')) currentState = 2;
+                    else if (this.classList.contains('state-3')) currentState = 3;
+
+                    this.classList.remove('state-0', 'state-1', 'state-2', 'state-3');
+                    const nextState = (currentState + 1) % 4;
+                    this.classList.add('state-' + nextState);
+                };
+
+                td.appendChild(div);
                 tr.appendChild(td);
-                return;
-            }
-            
-            let div = document.createElement('div');
-            div.className = 'pref-item state-0';
-            div.dataset.value = item.t;
-            
-            if(item.d) {
-                div.innerHTML = `<span class="pref-text">${item.t}</span><span class="pref-desc">(${item.d})</span>`;
-            } else {
-                div.innerHTML = `<span class="pref-text">${item.t}</span>`;
-            }
-            
-            div.onclick = function() {
-                let currentState = 0;
-                if (this.classList.contains('state-1')) currentState = 1;
-                else if (this.classList.contains('state-2')) currentState = 2;
-                else if (this.classList.contains('state-3')) currentState = 3;
+            });
 
-                this.classList.remove('state-0', 'state-1', 'state-2', 'state-3');
-                const nextState = (currentState + 1) % 4;
-                this.classList.add('state-' + nextState);
+            tableBody.appendChild(tr);
+        });
+
+        function toggleSelect(el) {
+            el.classList.toggle('selected');
+        }
+
+        function toggleActive(el) {
+            el.classList.toggle('active');
+        }
+
+        // 결과 복사하기 버튼 로직
+        function copyResults() {
+            const text = document.getElementById('resultContent').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("결과 텍스트가 클립보드에 복사되었습니다! 원하는 곳에 붙여넣기(Ctrl+V) 하세요.");
+            }).catch(err => {
+                alert("복사를 지원하지 않는 환경입니다. 글자를 직접 드래그해서 복사해주세요.");
+            });
+        }
+
+        // === Netlify 폼 전송 ===
+        async function submitData() {
+            const fetchContent = (selector) => Array.from(document.querySelectorAll(selector)).map(e => e.innerText.replace(/\n/g, ' '));
+
+            const data = {
+                "DOM_권성향": fetchContent('.dom-row .selected').join(', ') || '없음',
+                "SUB_피권성향": fetchContent('.sub-row .selected').join(', ') || '없음',
+                "적용_범위": fetchContent('#q2-grid .active').join(', ') || '없음',
+                "현재_파트너": fetchContent('#q3-grid .active').join(', ') || '없음',
+                "비밀_유지": fetchContent('#q4-grid .active').join(', ') || '없음',
+
+                "만남_요일": fetchContent('#q5-grid .active').join(', ') || '없음',
+                "연락_시간대": fetchContent('#q6-grid .active').join(', ') || '없음',
+                "합의부족_대처": fetchContent('#q7-grid .active').join(', ') || '없음',
+                "거부_도구_유무": fetchContent('#q8-grid .active').join(', ') || '없음',
+                "거부_도구_상세": document.getElementById('q8-input').value || '없음',
+                "내몸_터치_불가": fetchContent('#q9-grid .active').join(', ') || '없음',
+                "상대터치_싫음": fetchContent('#q10-grid .active').join(', ') || '없음',
+                "기타_원하는_플레이": document.getElementById('extra-requests').value || '없음',
+
+                "너무_좋아해요": [],
+                "가끔_호기심": [],
+                "절대_싫어요": []
             };
-            
-            td.appendChild(div);
-            tr.appendChild(td);
-        });
-        
-        tableBody.appendChild(tr);
-    });
 
-    function toggleSelect(el) {
-        el.classList.toggle('selected');
-    }
+            // 취향표 색상 데이터 푸시
+            document.querySelectorAll('.pref-item').forEach(item => {
+                if (item.classList.contains('state-1')) data["너무_좋아해요"].push(item.dataset.value);
+                else if (item.classList.contains('state-2')) data["가끔_호기심"].push(item.dataset.value);
+                else if (item.classList.contains('state-3')) data["절대_싫어요"].push(item.dataset.value);
+            });
 
-    function toggleActive(el) {
-        el.classList.toggle('active');
-    }
+            // 타임스탬프
+            const now = new Date();
+            const timestamp = `${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, '0')}월 ${String(now.getDate()).padStart(2, '0')}일 ${String(now.getHours()).padStart(2, '0')}시 ${String(now.getMinutes()).padStart(2, '0')}분`;
+            data["응답_시간"] = timestamp;
 
-    // 결과 복사하기 버튼 로직
-    function copyResults() {
-        const text = document.getElementById('resultContent').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("결과 텍스트가 클립보드에 복사되었습니다! 원하는 곳에 붙여넣기(Ctrl+V) 하세요.");
-        }).catch(err => {
-            alert("복사를 지원하지 않는 환경입니다. 글자를 직접 드래그해서 복사해주세요.");
-        });
-    }
+            // 100점 만점 성향 점수 계산 로직 (입력 데이터 개수에 기반한 가중치)
+            let rawScore = 20;
+            rawScore += document.querySelectorAll('.style-table .selected').length * 2.5;
+            rawScore += document.querySelectorAll('.options-grid .active').length * 1.5;
+            rawScore += data["너무_좋아해요"].length * 1.5;
+            rawScore += data["가끔_호기심"].length * 0.8;
+            // 점수 보정 (최대 100점, 최소 0점)
+            let finalScore = Math.min(100, Math.max(10, Math.floor(rawScore)));
 
-    // === Netlify 폼 전송 ===
-    async function submitData() {
-        const fetchContent = (selector) => Array.from(document.querySelectorAll(selector)).map(e => e.innerText.replace(/\n/g, ' '));
-        
-        const data = {
-            "DOM_권성향": fetchContent('.dom-row .selected').join(', ') || '없음',
-            "SUB_피권성향": fetchContent('.sub-row .selected').join(', ') || '없음',
-            "적용_범위": fetchContent('#q2-grid .active').join(', ') || '없음',
-            "현재_파트너": fetchContent('#q3-grid .active').join(', ') || '없음',
-            "비밀_유지": fetchContent('#q4-grid .active').join(', ') || '없음',
-            
-            "만남_요일": fetchContent('#q5-grid .active').join(', ') || '없음',
-            "연락_시간대": fetchContent('#q6-grid .active').join(', ') || '없음',
-            "합의부족_대처": fetchContent('#q7-grid .active').join(', ') || '없음',
-            "거부_도구_유무": fetchContent('#q8-grid .active').join(', ') || '없음',
-            "거부_도구_상세": document.getElementById('q8-input').value || '없음',
-            "내몸_터치_불가": fetchContent('#q9-grid .active').join(', ') || '없음',
-            "상대터치_싫음": fetchContent('#q10-grid .active').join(', ') || '없음',
-            "기타_원하는_플레이": document.getElementById('extra-requests').value || '없음',
+            // 성향 점수 기반 서술형 요약 생성
+            let summaryText = "";
+            if (finalScore >= 80) {
+                summaryText = "자신의 취향을 적극적으로 탐구하고 즐기는 <b>열정적인 플레이어</b>입니다. 다양한 자극과 상황에 대한 호기심 및 수용도가 매우 높습니다. 뚜렷한 주관을 바탕으로 파트너와 다채롭고 깊은 교감을 이끌어내는 데 능숙하며, 한계선 안에서 다이내믹한 경험을 추구하는 성향을 보입니다.";
+            } else if (finalScore >= 50) {
+                summaryText = "자신의 호불호가 명확하고, 신뢰하는 파트너와 함께 안정적인 <b>합의된 선 안에서 플레이를 즐기는 유형</b>입니다. 무리한 일탈보다는 충분히 예측 가능한 안전함을 중요시하면서도, 서로의 교감이 깊어짐에 따라 새로운 영역도 천천히 시도해볼 수 있는 유연함을 갖추고 있습니다.";
+            } else {
+                summaryText = "매우 신중하고 조심스러우며, <b>정서적 단단함과 안전함을 최우선으로 하는 유형</b>입니다. 강한 자극보다는 서서히 맞춰가는 과정에서 편안함을 느낍니다. 플 자체의 강도보다는 서로에 대한 완벽한 이해와 확실히 합의된 영역 내에서의 교감을 중요하게 생각합니다.";
+            }
 
-            "너무_좋아해요": [],
-            "가끔_호기심": [],
-            "절대_싫어요": []
-        };
-
-        // 취향표 색상 데이터 푸시
-        document.querySelectorAll('.pref-item').forEach(item => {
-            if (item.classList.contains('state-1')) data["너무_좋아해요"].push(item.dataset.value);
-            else if (item.classList.contains('state-2')) data["가끔_호기심"].push(item.dataset.value);
-            else if (item.classList.contains('state-3')) data["절대_싫어요"].push(item.dataset.value);
-        });
-
-        // 타임스탬프
-        const now = new Date();
-        const timestamp = `${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, '0')}월 ${String(now.getDate()).padStart(2, '0')}일 ${String(now.getHours()).padStart(2, '0')}시 ${String(now.getMinutes()).padStart(2, '0')}분`;
-        data["응답_시간"] = timestamp;
-
-        // 100점 만점 성향 점수 계산 로직 (입력 데이터 개수에 기반한 가중치)
-        let rawScore = 20; 
-        rawScore += document.querySelectorAll('.style-table .selected').length * 2.5;
-        rawScore += document.querySelectorAll('.options-grid .active').length * 1.5;
-        rawScore += data["너무_좋아해요"].length * 1.5;
-        rawScore += data["가끔_호기심"].length * 0.8;
-        // 점수 보정 (최대 100점, 최소 0점)
-        let finalScore = Math.min(100, Math.max(10, Math.floor(rawScore)));
-
-        // 모달 렌더링 (텍스트형 - 복사하기 기능 최적화)
-        const contentHtml = `
+            // 모달 렌더링 (텍스트형 - 복사하기 기능 최적화)
+            const contentHtml = `
 [기록 일시] : ${timestamp}
             
 [나의 스타일]
@@ -497,38 +794,44 @@ ${data["절대_싫어요"].join(', ') || '없음'}
 ${data["기타_원하는_플레이"]}
 
 <br>
+<div style="margin-top:20px; padding:15px; background:#e7f3ff; border-left:5px solid #00b0f0; border-radius:5px; font-size:14px; line-height:1.6; color:#333; word-break:keep-all;">
+    💡 <b>성향 요약:</b><br>
+    ${summaryText}
+</div>
+
 <div style="text-align:center; font-size:18px; font-weight:bold; margin-top:15px; padding:15px; background:#fff3cd; border:2px solid #ffc107; border-radius:8px; color:#333;">
 🔥 데이터 기반 나의 성향 점수: <span style="color:#d32f2f; font-size:24px;">${finalScore}점</span> / 100점
 </div>
         `;
-        document.getElementById('resultContent').innerHTML = contentHtml.replace(/\n/g, '<br>');
-        document.getElementById('resultModal').style.display = 'block';
+            document.getElementById('resultContent').innerHTML = contentHtml.replace(/\n/g, '<br>');
+            document.getElementById('resultModal').style.display = 'block';
 
-        // url-encoded 폼 데이터 빌더 (Netlify용)
-        const encodedData = new URLSearchParams();
-        encodedData.append("form-name", "survey_results");
-        encodedData.append("성향_점수", finalScore + "점");
-        
-        Object.keys(data).forEach(key => {
-            if (Array.isArray(data[key])) {
-                encodedData.append(key, data[key].join(', ') || "선택 없음");
-            } else {
-                encodedData.append(key, data[key]);
-            }
-        });
+            // url-encoded 폼 데이터 빌더 (Netlify용)
+            const encodedData = new URLSearchParams();
+            encodedData.append("form-name", "survey_results");
+            encodedData.append("성향_점수", finalScore + "점");
 
-        // 백그라운드 사일런트 전송 (조용히 Netlify로 보냄)
-        try {
-            fetch("https://smtest.netlify.app/", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: encodedData.toString()
+            Object.keys(data).forEach(key => {
+                if (Array.isArray(data[key])) {
+                    encodedData.append(key, data[key].join(', ') || "선택 없음");
+                } else {
+                    encodedData.append(key, data[key]);
+                }
             });
-        } catch (error) {
-            console.log("통신 에러");
+
+            // 백그라운드 사일런트 전송 (조용히 Netlify로 보냄)
+            try {
+                fetch("https://smtest.netlify.app/", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: encodedData.toString()
+                });
+            } catch (error) {
+                console.log("통신 에러");
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
+
 </html>
